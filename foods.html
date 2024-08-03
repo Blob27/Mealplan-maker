@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="text/javascript" src="scripts.js"></script>
+  </head>
+  <body id="foodsbody" onload="listfoods()">
+    <a tabindex="-1" class="homeButtonLink" href="Mealplanmaker.html"
+      ><button class="homeButton"><i class="fas fa-home"></i></button
+    ></a>
+    <div id="foodslistcontainer">
+      <div id="foodslistmenu">
+        <button
+          class="foodslistmenuButton foodslistmenuButtonMargin tooltip"
+          onclick="downloadFoods();"
+          id="foodslistmenuButtonDownload"
+        >
+          <i class="fas fa-download"></i>
+          <span class="tooltiptext"
+            >Download a file with your saved foods.</span
+          >
+        </button>
+        <button
+          onclick="checkEmpty();"
+          id="foodslistmenuButtonUpload"
+          class="foodslistmenuButton foodslistmenuButtonMargin tooltip"
+        >
+          <input
+            onchange="HandleUpload(this);"
+            id="fileselection"
+            type="file"
+            accept=".json"
+            hidden
+          />
+          <i class="fas fa-upload"></i>
+          <span class="tooltiptext">Upload a file to load saved foods.</span>
+        </button>
+        <button
+          onclick="editFoods(); confirmChoice('Confirm changes?&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;', saveChanges);"
+          id="foodslistmenuButtonEdit"
+          class="foodslistmenuButton foodslistmenuButtonMargin tooltip"
+        >
+          <i class="fas fa-pen"></i>
+          <span class="tooltiptext">Edit saved foods.</span>
+        </button>
+        <button
+          onclick="confirmChoice('Are you sure you want to delete ALL foods?', clearFoods);"
+          id="foodslistmenuButtonClear"
+          class="foodslistmenuButton tooltip"
+        >
+          <i class="fas fa-trash"></i>
+          <span class="tooltiptext">Delete ALL saved foods.</span>
+        </button>
+      </div>
+      <div id="foodslist"></div>
+    </div>
+    <div id="foodspanel">
+      <div id="newfoodContainer">
+        <form
+          onsubmit="submitNewFood(this.foodName.value, this.Carbs.value, this.Protein.value, this.Fat.value, this.Calories.value);"
+          id="newfoodForm"
+          action=""
+        >
+          <div id="newfood">
+            <input
+              name="foodName"
+              id="newfoodTitle"
+              type="text"
+              placeholder="Enter food name"
+              required
+            />
+            <div id="newfoodNutrients">
+              <div class="Macros">
+                <div class="MacroItem Carbs">
+                  <div class="CarbsTitle MacroItemTitle newfoodMacroItemTitle">
+                    Carbs
+                  </div>
+                  <input
+                    id="newfoodCarbs"
+                    name="Carbs"
+                    type="number"
+                    step="any"
+                    placeholder="Enter carbs (g)"
+                    class="CarbsValue newfoodMacroItemValue noarrows"
+                    onkeydown="return event.keyCode !== 69"
+                    required
+                  />
+                </div>
+                <div class="MacroItem Protein">
+                  <div
+                    class="ProteinTitle MacroItemTitle newfoodMacroItemTitle"
+                  >
+                    Protein
+                  </div>
+                  <input
+                    id="newfoodProtein"
+                    name="Protein"
+                    type="number"
+                    step="any"
+                    placeholder="Enter Protein (g)"
+                    class="CarbsValue newfoodMacroItemValue noarrows"
+                    onkeydown="return event.keyCode !== 69"
+                    required
+                  />
+                </div>
+                <div class="MacroItem Fat">
+                  <div class="FatTitle MacroItemTitle newfoodMacroItemTitle">
+                    Fat
+                  </div>
+                  <input
+                    id="newfoodFat"
+                    name="Fat"
+                    type="number"
+                    step="any"
+                    placeholder="Enter fat (g)"
+                    class="FatValue newfoodMacroItemValue noarrows"
+                    onkeydown="return event.keyCode !== 69"
+                    required
+                  />
+                </div>
+              </div>
+              <input
+                name="Calories"
+                type="number"
+                step="any"
+                placeholder="Enter calories (kcal)"
+                class="Calories noarrows"
+                id="newfoodCalories"
+                onkeydown="return event.keyCode !== 69"
+                required
+              />
+            </div>
+            <p id="newfoodper100">/100g</p>
+          </div>
+          <div id="newfoodButtonsContainer">
+            <input
+              value="Add Food"
+              type="submit"
+              class="newfoodButtons"
+              id="newfoodAddFoodButton"
+            />
+            <input
+              value="Cancel"
+              type="reset"
+              class="newfoodButtons"
+              id="newfoodCancelButton"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

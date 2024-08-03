@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="text/javascript" src="scripts.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("select").select2();
+      });
+    </script>
+  </head>
+  <body onload="listMealPlan();" id="mealplanbody">
+    <div id="menubarmealplan">
+      <a class="homeButtonLink" href="Mealplanmaker.html"
+        ><button class="homeButton"><i class="fas fa-home"></i></button
+      ></a>
+    </div>
+    <div id="maincontainer">
+      <div id="mealplangrid">
+        <div id="mealplantitle"></div>
+          <div id = "mealplaninfo">
+            <div id="mealplantitlecontainer">
+              <form onsubmit = "updateMPTitle(this);">
+                <input placeholder="Meal plan name" type="text" name="mealplantitleTE"
+                id="mealplantitleTE">
+              </form>
+            </div>
+            <div id="configmealplan">
+              <button class = "configmealplanbuttons" onclick = "downloadMealPlan();" id = "savemealplan"><i class = "fas fa-download"></i></button>
+              <button class = "configmealplanbuttons" onclick = "checkEmptyMP();" id = "loadmealplan"><i class = "fas fa-upload"></i></button>
+              <input
+                onchange="HandleUploadMP(this);"
+                id="fileselectionMP"
+                type="file"
+                accept=".json"
+                hidden
+              />
+              <button class = "configmealplanbuttons" onclick = "confirmChoiceMP('Are you sure you want to delete the WHOLE meal plan?', clearMealPlan)" id = "clearmealplan"><i class = "fas fa-trash"></i></button>
+            </div>
+            <div id="macroinfos">
+              <span id="TotalText">Total</span>
+              <span id="carbstotalinfo"></span>
+              <span id ="proteintotalinfo"></span>
+              <span id="fattotalinfo"></span>
+              <span id="kcaltotalinfo"></span>
+            </div>
+          </div>
+        </div>
+        <div id="scrollcontainer">
+          <table id="maintable">
+            <!-- <tr id = "AddMealRow">
+              <td id = "AddMealBlock"><button onclick = "changeButton();" id="addMeal" class = "buttontoinput">Add Meal</button></th>
+            </tr> -->
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

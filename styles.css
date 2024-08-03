@@ -1,0 +1,778 @@
+html {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    height: 100%;
+    width: 100%;
+}
+body {
+    background-color: #F8F6F0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#buttons {
+    height: fit-content;
+    width: fit-content;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: static;
+    margin: auto;
+    display: grid;
+    margin-top: 60px;
+}
+
+#container {
+    height: fit-content;
+    width: fit-content;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 100px;
+    display: grid;
+}
+
+.mainScreenButton {
+    width: 400px;
+    height: 60px;
+}
+
+button {
+    font-size: large;
+    background-color: gray;
+    border: none;
+    border-radius: 15px;
+    
+}
+
+button:hover{
+    transform: scale(1.01);
+    -webkit-box-shadow: inset 1px 1px 10px #3333334d;
+    -moz-box-shadow:    inset 1px 1px 10px #3333334d;
+    box-shadow:         inset 1px 1px 10px #3333334d;
+    cursor:pointer;
+
+}
+
+button:active{
+    transform: scale(0.99);
+}
+
+
+
+#foods {
+    margin-bottom: 15px;
+}
+
+
+#MainTitle {
+    text-align: center;
+    font-size: 100px;
+}
+
+#foodslist {
+    background: rgb(224, 224, 224);
+    width: 500px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 0px 9px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+}
+
+p {
+    margin: 0;
+}
+
+.Fooddiv{
+    height: 200px;
+    width: auto;
+    background: #956;
+    border-radius: 30px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.Title {
+    line-height: 50px;
+    height: 50px;
+    font-size: xx-large;
+    background: white;
+    border-radius: 30px;
+    text-align: left;
+    padding-left: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.Macros {
+    display: flex;
+    flex-direction: row;
+    height: 67%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.Nutrients {
+    background: white;
+    border-radius: 30px;
+    height: 107px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.MacroItem {
+    width: 33.333333%;
+    overflow: hidden;
+}
+
+.MacroItemTitle {
+    height: 30%;
+    text-align: center;
+    font-size: large;
+    font-style: italic;
+    overflow: hidden;
+}
+
+
+
+.MacroItemValue {
+    height: 70%;
+    text-align: center;
+    display: grid;
+    place-items: center;
+    font-size: x-large;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.Carbs {
+    width: 33.333333%;
+    overflow: hidden;
+}
+
+.Protein {
+    width: 33.333333%;
+    overflow: hidden;
+}
+
+.Fat {
+    width: 34%;
+    overflow: hidden;
+}
+
+.Calories {
+    width: 100%;
+    height: 33%;
+    background-color: burlywood;
+    display: grid;
+    place-items: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: larger;
+    border-top-style: solid;
+    border-width: 2px;
+    border-color: black;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+[contenteditable="true"] br{
+    display: none;
+}
+
+.CarbsTitle {
+    background-color: green;
+    overflow: hidden;
+}
+
+.ProteinTitle {
+    background-color: orange;
+    overflow: hidden;
+}
+
+.FatTitle {
+    background-color: rgb(98, 109, 250);
+    overflow: hidden;
+}
+
+.CarbsValue {
+    overflow: hidden;
+}
+
+.ProteinValue {
+    overflow: hidden;
+}
+
+.FatValue {
+    overflow: hidden;
+}
+
+.per100 {
+    margin-left: 10px;
+    font-size: large;
+}
+
+
+#foodspanel {
+    height: 100%;
+    flex: 1;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#foodsbody {
+    display: flex;
+}
+
+#newfood {
+    height: 400px;
+    width: 950px;
+    background: #956;
+    border-radius: 60px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+    box-shadow: 3px 3px 64px -17px rgba(0,0,0,0.66);
+}
+
+#newfoodTitle {
+    box-sizing: border-box;
+    line-height: 100px;
+    height: 100px;
+    font-size: xx-large ;
+    background: white;
+    border-radius: 60px;
+    text-align: left;
+    width: 918px;
+    border-style: none;
+    padding-left: 40px;
+}
+
+input:hover {
+    outline: none;
+    padding: 0;
+}
+
+input {
+    outline: none;
+    border: none;
+    padding: 0;
+}
+
+#newfoodNutrients {
+    height: 214px;
+    background-color: white;
+    overflow: hidden;
+    margin-top: 20px;
+    border-radius: 60px;
+}
+
+#newfoodper100 {
+    font-size: xx-large;
+    margin-left: 20px;
+}
+
+.newfoodMacroItemValue {
+    height: 70%;
+    width: 100%;
+    display: grid;
+    text-align: center;
+    place-items: center;
+    font-size: x-large;
+}
+
+.newfoodMacroItemTitle {
+    font-size: xx-large;
+    line-height: 43px;
+}
+
+#newfoodCalories {
+    font-size: x-large;
+    border-width: 3px;
+    text-align: center;
+    height: 68px;
+    overflow: hidden;
+}
+
+#newfoodContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+#newfoodButtonsContainer {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.newfoodButtons {
+    width: 250px;
+    height: 50px;
+    font-size: large;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.newfoodButtons:focus-visible {
+    outline: solid black 2px;
+}
+
+button:focus-visible {
+    outline: solid black 2px;
+}
+
+.newfoodButtons:hover {
+    transform: scale(1.01);
+    -webkit-box-shadow: inset 1px 1px 10px #3333334d;
+    -moz-box-shadow:    inset 1px 1px 10px #3333334d;
+    box-shadow:         inset 1px 1px 10px #3333334d;
+}
+
+.newfoodButtons:active {
+    transform: scale(0.99);
+}
+
+#newfoodAddFoodButton {
+    background-color: greenyellow;
+    margin-left: 20px;
+    border: none;
+
+}
+
+#newfoodCancelButton {
+    background-color: gray;
+}
+
+#declineOverwriteButton {
+    width: 250px;
+    height: 50px;
+    background-color: gray;
+    margin-left: 20px;
+}
+
+#confirmOverwriteButton {
+    background-color: #EE2A15;
+    width: 250px; 
+    height: 50px;
+    margin-left: 20px;   
+}
+
+#warnOverwriteText {
+    height:50px;
+    line-height: 50px;
+}
+
+.homeButton {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    top: 20px;
+    right: 20px;
+    border-radius: 50px;
+    font-size: xx-large;
+    background-color: coral;
+}
+
+.homeButtonLink {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.newarrows::-webkit-outer-spin-button,
+.noarrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#foodslistmenu {
+    height: 45px;
+    width: 500px;
+    background: rgb(190, 190, 190);
+    border-bottom: solid black 2px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 0px 9px;
+}
+
+.foodslistmenuButton {
+    height: 30px;
+    flex: 1;
+    align-self: center;
+    border-radius: 25px;
+    font-size: medium;
+}
+
+.confirmChoiceButton {
+    height: 30px;
+    width: 114px;
+    border-radius: 25px;
+    font-size: medium;
+    font-size: larger;
+    margin-right: 9px;
+}
+
+.foodslistmenuButtonMargin {
+    margin-right: 9px;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+}
+
+#foodslistcontainer {
+    width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#foodslistmenuButtonDownload {
+    background-color: #27A97B;
+}
+
+#foodslistmenuButtonUpload {
+    background-color: #25ADFE;
+}
+
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+.tooltip .tooltiptext {
+transition-delay: 2s;
+opacity: 0;
+transition: opacity 0.3s;
+visibility: hidden;
+width: 120px;
+background-color: rgb(255, 255, 255);
+border: solid grey 1px;
+box-sizing: border-box;
+color: #fff;
+color:black;
+text-align: center;
+border-radius: 6px;
+padding: 5px 0;
+position: absolute;
+z-index: 1;
+top: 150%;
+left: 50%;
+margin-left: -60px;
+}
+  
+.tooltip .tooltiptext::after {
+
+content: "";
+position: absolute;
+bottom: 100%;
+left: 50%;
+margin-left: -5px;
+border-width: 5px;
+border-style: solid;
+border-color: transparent transparent grey transparent;
+}
+  
+.tooltip:hover .tooltiptext {
+transition-delay: 0.8s;
+visibility: visible;
+opacity: 1;
+}
+
+#foodslistmenuButtonEdit {
+    background-color: rgb(241, 174, 48);
+}
+
+#foodslistmenuButtonClear {
+    background-color: #EE2A15;
+}
+
+button:disabled {
+    transform: scale(1);
+    -webkit-box-shadow: none;
+    -moz-box-shadow:    none;
+    box-shadow:         none;
+    cursor:default;
+}
+
+.bottomContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deleteIndividualButton {
+    width: 30px;
+    height: 16px;
+    font-size: small;
+    background-color: #EE2A15;
+    margin-top: 3px;
+    margin-right: 10px;
+    justify-content: center;
+    align-content: center;
+}
+
+.deleteIndividualButtonAccept {
+    width: 30px;
+    height: 16px;
+    font-size: small;
+    background-color: green;
+    margin-top: 3px;
+    margin-right: 10px;
+    justify-content: center;
+    align-content: center;
+}
+
+.deleteIndividualButtonReject {
+    width: 30px;
+    height: 16px;
+    font-size: small;
+    background-color: red;
+    margin-top: 3px;
+    margin-right: 10px;
+    justify-content: center;
+    align-content: center;
+}
+
+.addImport {
+    background-color: #25ADFE;
+}
+
+#menubarmealplan {
+    height: 15%;
+    width: 100%;
+}
+
+#maincontainer {
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom:20px;
+    width: 100%;
+    height: 85%;
+    box-sizing: border-box;
+    display: table;
+    border-top: solid 2px black;
+    display: flex;
+    overflow: hidden;
+}
+
+#mealplangrid {
+    /* width: 100%; */
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+#mealplantitleTE {
+    background-color: white;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    font-size: x-large;
+    text-align: center;
+    border-radius: 25px;
+    border: solid 1px black; 
+}
+#mealplantitle {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#addMeal {
+    font-size: large;
+    background-color: greenyellow;
+    width: 300px;
+    height: 50px;
+}
+
+#maintable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.buttontoinput {
+    font-size: large;
+    background-color: greenyellow;
+    border: none;
+    border-radius: 30px;
+    text-align: center;
+}
+.addFoodmealplan {
+    width: 100%;
+    font-size: small;
+    height: 25px;
+    background-color: greenyellow
+}
+
+.AddMealInput {
+    font-size: large;
+    background-color: greenyellow;
+    width: 300px;
+    height: 50px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.newFoodButtonMP {
+    width: 100px;
+    height: 25px;
+    background-color: greenyellow;
+    font-size: small;
+}
+.mealheader {
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.MacroHeader {
+    text-align: center;
+    font-size: large;
+    font-style: italic;
+    overflow: hidden;
+}
+
+.CarbsHeader {
+    background-color: green;
+    border-top-left-radius: 30px;
+    min-width: 100px;
+}
+.ProteinHeader {
+    background-color: orange;
+    min-width: 100px;
+}
+.FatHeader {
+    background-color: rgb(98, 109, 250);
+    border-top-right-radius: 30px;
+    min-width: 100px;
+}
+
+.nameandvalueblock {
+    display: flex;
+    flex-direction: row;
+}
+
+.namediv {
+    width: 70%;
+}
+
+.nameinput {
+    width: 100%;
+    height: 100%;
+}
+
+.valuediv {
+    width: 20%;
+}
+
+.valueinput {
+    width: 100%;
+    height: 100%;
+    text-align: right;
+    font-size: large;
+    border-radius: 5px;
+}
+.gramsymbol {
+    width: 5%;
+    font-size: larger
+}
+
+td {
+    justify-content: center;
+    text-align: center;
+}
+
+#mealplaninfo {
+    width: 500px;
+    background-color: orange;
+    background-color: white;
+    padding: 10px 20px;
+    width: 500px;
+    font-size: x-large;
+    text-align: center;
+    border-radius: 25px;
+    border-bottom: solid 1px black;
+    border-right: solid 1px black;
+    border-left: solid 1px black
+}
+
+#scrollcontainer {
+    overflow-y: auto;
+    flex: 1;
+}
+
+#configmealplan {
+    display: flex;
+    margin-top: 20px
+}
+.configmealplanbuttons {
+    flex: 1;
+    height: 30px;
+}
+
+#savemealplan {
+    background-color: #27A97B;
+}
+
+#loadmealplan {
+    background-color: #25ADFE;
+    margin: 0px 9px;
+}
+
+#clearmealplan {
+    background-color: #EE2A15;
+}
+
+.confirmChoiceButtonMP {
+    height: 30px;
+    width: 114px;
+    border-radius: 25px;
+    font-size: medium;
+    font-size: larger;
+    margin-right: 9px;
+}
+
+#messageMP {
+    font-size: x-large;
+}
+
+#macroinfos {
+    margin-top: 50px;
+    height: 200px;
+    border-radius: 30px;
+    border: solid 2px black;
+    display: flex;
+    flex-direction: column;
+}
+
+#TotalText {
+    margin-bottom: 20px;
+}
