@@ -616,12 +616,25 @@ function listMealPlan() {
         var carbsheaderblock = document.createElement("td");
         var proteinheaderblock = document.createElement("td");
         var fatheaderblock = document.createElement("td");
-        mealheaderblock.innerHTML = mealname;
+        var mealheaderdiv = document.createElement("div");
+        var deleteMealMP = document.createElement("button");
+        var trashMeal = document.createElement("i")
+        var deleteMealMPdiv = document.createElement("div");
+        mealheaderbar.setAttribute("data-mealname", mealname);
+        trashMeal.classList.add("fas", "fa-trash");
+        deleteMealMP.appendChild(trashMeal);
+        deleteMealMPdiv.className = "deletemealmpdiv"
+        deleteMealMPdiv.appendChild(deleteMealMP);
+        mealheaderblock.appendChild(deleteMealMPdiv);
+        mealheaderblock.appendChild(mealheaderdiv);
+        mealheaderdiv.innerHTML = mealname;
         carbsheaderblock.innerHTML = "Carbs";
         proteinheaderblock.innerHTML = "Protein";
         fatheaderblock.innerHTML = "Fat";
-
+        deleteMealMP.className = "deletemealmp";
+        deleteMealMP.setAttribute("onclick", "deleteMealMP(this);")
         mealheaderblock.className = "mealheader";
+        mealheaderdiv.className = "mealheaderdiv";
         carbsheaderblock.className = "MacroHeader CarbsHeader";
         proteinheaderblock.className = "MacroHeader ProteinHeader";
         fatheaderblock.className = "MacroHeader FatHeader";
@@ -653,13 +666,16 @@ function listMealPlan() {
             var fatvalue = document.createElement("td");
             var subkcal = document.createElement("td");
             var gramsymbol = document.createElement("span")
+            var deleteIndividualMPdiv = document.createElement("div");
+            deleteIndividualMPdiv.className = "deletemealmpdiv";
+            deleteIndividualMPdiv.appendChild(deleteIndividualMP);
             nameinput.style.width = "100%"
             nameandvalueblock.className = "nameandvalueblock";
             valuediv.className = "valuediv";
             namediv.className = "namediv";
             trash.classList.add("fas", "fa-trash");
             deleteIndividualMP.appendChild(trash);
-            deleteIndividualMP.className = "deleteIndividualButton";
+            deleteIndividualMP.className = "deletemealmp";
             deleteIndividualMP.setAttribute("onclick", "deleteIndividualMP(this);")
             valueinput.className = "valueinput";
             nameinput.className = "nameinput";
@@ -691,7 +707,7 @@ function listMealPlan() {
                 subkcal.innerHTML = Math.round(((foodsdict[foodname][3]*(foodvalue/100)) + Number.EPSILON) * 100) / 100 + "kcal";
             }
             namediv.appendChild(nameinput);
-            nameandvalueblock.appendChild(deleteIndividualMP);
+            nameandvalueblock.appendChild(deleteIndividualMPdiv);
             if(foodname != null && foodname != "null") {
                 valuediv.appendChild(valueinput);
                 nameandvalueblock.appendChild(valuediv);
@@ -944,9 +960,17 @@ function downloadMealPlan() {
 
 function deleteIndividualMP(button) {
     let mealplanwhole = JSON.parse(localStorage.getItem("mealplan"));
-    let mealname = button.parentNode.parentNode.getAttribute("data-mealname");
-    let foodname = button.parentNode.parentNode.getAttribute("data-foodname");
+    let mealname = button.parentNode.parentNode.parentNode.getAttribute("data-mealname");
+    let foodname = button.parentNode.parentNode.parentNode.getAttribute("data-foodname");
     delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname]
+    localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
+    listMealPlan();
+}
+
+function deleteMealMP(button) {
+    let mealplanwhole = JSON.parse(localStorage.getItem("mealplan"));
+    let mealname = button.parentNode.parentNode.parentNode.getAttribute("data-mealname");
+    delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname];
     localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
     listMealPlan();
 }

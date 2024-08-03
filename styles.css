@@ -653,6 +653,26 @@ button:disabled {
     text-align: center;
 }
 
+.deletemealmp {
+    width: 30px;
+    height: 16px;
+    font-size: small;
+    background-color: #EE2A15;
+    justify-content: center;
+    align-content: center;
+    justify-self: center;
+}
+
+.deletemealmpdiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mealheaderdiv {
+    flex: 1;
+}
+
 .MacroHeader {
     text-align: center;
     font-size: large;
