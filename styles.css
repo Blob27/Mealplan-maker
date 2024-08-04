@@ -665,8 +665,9 @@ button:disabled {
 
 .deletemealmpdiv {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    min-width: 100px;
 }
 
 .mealheaderdiv {
@@ -735,6 +736,7 @@ td {
     background-color: orange;
     background-color: white;
     padding: 10px 20px;
+    margin-right:8px;
     width: 500px;
     font-size: x-large;
     text-align: center;
@@ -795,4 +797,21 @@ td {
 
 #TotalText {
     margin-bottom: 20px;
+}
+
+.confirmDIButtonMP {
+    width: 30px;
+    height: 16px;
+    font-size: small;
+    justify-content: center;
+    align-content: center;
+}
+
+.deleteIndividualButtonAcceptMP {
+    background-color: green;
+    margin-right:6px;
+}
+
+.deleteIndividualButtonRejectMP {
+    background-color: red;
 }

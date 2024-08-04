@@ -119,9 +119,6 @@ function submitNewFood(foodName, Carbs, Protein, Fat, Calories) {
         }
     }
     var Nutrients = [parseFloat(Carbs), parseFloat(Protein), parseFloat(Fat), parseFloat(Calories)];
-    
-    console.log(foodsdict);
-    console.log(foodName);
     foodsdict[foodName.toString()] = Nutrients;
     localStorage.setItem("storedFoods", JSON.stringify(foodsdict));
     listfoods();
@@ -590,22 +587,24 @@ function listMealPlan() {
     let foodsdict = JSON.parse(localStorage.getItem("storedFoods"));
     let mealplanwhole = JSON.parse(localStorage.getItem("mealplan"));
     var maintable = document.getElementById("maintable");
+    var mealplantitle = document.getElementById("mealplantitleTE");
     if(mealplanwhole == null) {
         document.getElementById("savemealplan").disabled = true;
         document.getElementById("clearmealplan").disabled = true;
         maintable.replaceChildren();
         listaddfoodbutton();
+        mealplantitle.value = ""
         return;
     } else {
         document.getElementById("savemealplan").disabled = false;
         document.getElementById("clearmealplan").disabled = false;
+        mealplantitle.value = Object.keys(mealplanwhole)[0];
     }
     let bigtotalcarbs = 0;
     let bigtotalprotein = 0;
     let bigtotalfat = 0;
     let bigtotalkcal = 0;
-    var mealplantitle = document.getElementById("mealplantitleTE")
-    mealplantitle.value = Object.keys(mealplanwhole)[0]
+
     var mealplangrid = document.getElementById("mealplangrid");
     maintable.replaceChildren();
     let mealplan = Object.values(mealplanwhole)[0];
@@ -632,7 +631,7 @@ function listMealPlan() {
         proteinheaderblock.innerHTML = "Protein";
         fatheaderblock.innerHTML = "Fat";
         deleteMealMP.className = "deletemealmp";
-        deleteMealMP.setAttribute("onclick", "deleteMealMP(this);")
+        deleteMealMP.setAttribute("onclick", "confirmDeleteIndividualMP(this);")
         mealheaderblock.className = "mealheader";
         mealheaderdiv.className = "mealheaderdiv";
         carbsheaderblock.className = "MacroHeader CarbsHeader";
@@ -676,7 +675,7 @@ function listMealPlan() {
             trash.classList.add("fas", "fa-trash");
             deleteIndividualMP.appendChild(trash);
             deleteIndividualMP.className = "deletemealmp";
-            deleteIndividualMP.setAttribute("onclick", "deleteIndividualMP(this);")
+            deleteIndividualMP.setAttribute("onclick", "confirmDeleteIndividualMP(this);")
             valueinput.className = "valueinput";
             nameinput.className = "nameinput";
             carbsvalue.className = "carbsvaluemp";
@@ -750,10 +749,10 @@ function listMealPlan() {
                 if(val == null) {
                     continue;
                 }
-                ctot = (Math.round(((ctot + foodsdict[key][0]*(val/100)) + Number.EPSILON) * 100) / 100);
-                ptot = (Math.round(((ptot + foodsdict[key][1]*(val/100)) + Number.EPSILON) * 100) / 100);
-                ftot = (Math.round(((ftot + foodsdict[key][2]*(val/100)) + Number.EPSILON) * 100) / 100);
-                ktot = (Math.round(((ktot + foodsdict[key][3]*(val/100)) + Number.EPSILON) * 100) / 100);
+                ctot = Math.round(((ctot + foodsdict[key][0]*(val/100)) + Number.EPSILON) * 100) / 100;
+                ptot = Math.round(((ptot + foodsdict[key][1]*(val/100)) + Number.EPSILON) * 100) / 100;
+                ftot = Math.round(((ftot + foodsdict[key][2]*(val/100)) + Number.EPSILON) * 100) / 100;
+                ktot = Math.round(((ktot + foodsdict[key][3]*(val/100)) + Number.EPSILON) * 100) / 100;
             }
             carbstotal.innerHTML = ctot + "g";
             proteintotal.innerHTML = ptot + "g";
@@ -778,10 +777,10 @@ function listMealPlan() {
     var proteindisplay = document.getElementById("proteintotalinfo");
     var fatdisplay = document.getElementById("fattotalinfo");
     var kcaldisplay = document.getElementById("kcaltotalinfo");
-    carbsdisplay.innerHTML = "Carbs: " + bigtotalcarbs;
-    proteindisplay.innerHTML = "Protein: " + bigtotalprotein;
-    fatdisplay.innerHTML = "Fat: " +  bigtotalfat;
-    kcaldisplay.innerHTML = "Total calories: " + bigtotalkcal;
+    carbsdisplay.innerHTML = "Carbs: " + (Math.round((bigtotalcarbs + Number.EPSILON) * 100) / 100) + "g"
+    proteindisplay.innerHTML = "Protein: " + (Math.round((bigtotalprotein + Number.EPSILON) * 100) / 100) + "g"
+    fatdisplay.innerHTML = "Fat: " +  (Math.round((bigtotalfat + Number.EPSILON) * 100) / 100) + "g"
+    kcaldisplay.innerHTML = "Total calories: " + (Math.round((bigtotalkcal + Number.EPSILON) * 100) / 100) + "kcal";
     listaddfoodbutton();
     $("select").select2();
 }
@@ -791,17 +790,42 @@ function updateFoodName(input) {
     let mealplan = mealplanwhole[Object.keys(mealplanwhole)[0]];
     let mealname = input.parentNode.parentNode.parentNode.getAttribute("data-mealname");
     let foodname = input.parentNode.parentNode.parentNode.getAttribute("data-foodname");
-    console.log(mealname);
+    for(key of Object.keys(mealplan[mealname])) {
+        if(key == input.value) {
+            window.alert("This food is already selected in this meal.");
+            listMealPlan();
+            return;
+        }
+    }
     if(foodname == "null") {
         foodname = null;
     }
-    let oldvalue
-    console.log(mealplan[mealname])
+    let oldvalue;
     if(foodname == null) {
         oldvalue = null;
     } else {oldvalue = mealplan[mealname][foodname];}
-    delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname];
-    mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][input.value] = oldvalue;
+    if(foodname == null) {
+        delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname];
+        mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][input.value] = oldvalue;
+        localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
+        listMealPlan();
+        return;
+    }
+    var meal = mealplanwhole[Object.keys(mealplanwhole)[0]][mealname];
+    var index = Object.keys(meal).indexOf(foodname);
+    if(index >= Object.keys(meal).length-1) {
+            delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname];
+            mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][input.value] = oldvalue;
+            localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
+            listMealPlan();
+            return;
+    }
+    delete meal[foodname];
+    objmeal = addToObject(meal, input.value, oldvalue, index);
+    console.log(objmeal);
+    mealplanwhole[Object.keys(mealplanwhole)[0]][mealname] = objmeal;
+    // delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname];
+    // mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][input.value] = oldvalue;
     localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
     listMealPlan();
 }
@@ -974,3 +998,107 @@ function deleteMealMP(button) {
     localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
     listMealPlan();
 }
+
+
+function confirmDeleteIndividualMP(button) {
+    let buttoncontainer = button.parentNode;
+    buttoncontainerchildren = buttoncontainer.children;
+    for(let i = 0; i < buttoncontainerchildren.length; i++) {
+        buttoncontainerchildren[i].style.display = "none";
+    }
+
+    var confirmDI = document.createElement("button");
+    var rejectDI = document.createElement("button");
+    confirmDI.className = "deleteIndividualButtonAcceptMP confirmDIButtonMP";
+    rejectDI.className = "deleteIndividualButtonRejectMP confirmDIButtonMP";
+    if(button.parentNode.parentNode.className == "mealheader") {
+        confirmDI.setAttribute("onclick", "AcceptDeleteMealMP(this);");
+    } else {
+        confirmDI.setAttribute("onclick", "AcceptDeleteIndividualMP(this);");
+    }
+    
+    rejectDI.setAttribute("onclick", "RejectDeleteIndividualMP();");
+    var check = document.createElement("i");
+    var xmark = document.createElement("i");
+    check.classList.add("fas", "fa-check");
+    xmark.classList.add("fa-solid", "fa-xmark");
+    confirmDI.appendChild(check);
+    rejectDI.appendChild(xmark);
+    buttoncontainer.appendChild(confirmDI);
+    buttoncontainer.appendChild(rejectDI);
+}
+
+
+function AcceptDeleteIndividualMP(button) {
+    deleteIndividualMP(button);
+    var els = document.getElementsByClassName("confirmDIButtonMP");
+    for(let i = 0; i < els.length; i++) {
+        els[i].style.display = "none";
+    }
+
+    var elems = document.getElementsByClassName("deletemealmp")
+    for(let i = 0; i < elems.length; i++) {
+        elems[i].style.display = "inline"
+    }
+    listMealPlan();
+}
+
+function AcceptDeleteMealMP(button) {
+    deleteMealMP(button);
+    var els = document.getElementsByClassName("confirmDIButtonMP");
+    for(let i = 0; i < els.length; i++) {
+        els[i].style.display = "none";
+    }
+
+    var elems = document.getElementsByClassName("deletemealmp")
+    for(let i = 0; i < elems.length; i++) {
+        elems[i].style.display = "inline"
+    }
+    listMealPlan();
+}
+
+function RejectDeleteIndividualMP() {
+    var els = document.getElementsByClassName("containconfirmDI");
+    for(let i = 0; i < els.length; i++) {
+        els[i].style.display = "none";
+    }
+
+    var elems = document.getElementsByClassName("deleteIndividualButton")
+    for(let i = 0; i < elems.length; i++) {
+        elems[i].style.display = "inline"
+    }
+    listMealPlan();
+}
+
+function addToObject(obj, key, value, index) {
+
+	// Create a temp object and index variable
+	var temp = {};
+	var i = 0;
+
+	// Loop through the original object
+	for (var prop in obj) {
+		if (obj.hasOwnProperty(prop)) {
+
+			// If the indexes match, add the new item
+			if (i === index && key && value) {
+				temp[key] = value;
+			}
+
+			// Add the current item in the loop to the temp obj
+			temp[prop] = obj[prop];
+
+			// Increase the count
+			i++;
+
+		}
+	}
+
+	// If no index, add to the end
+	if (!index && key && value) {
+		temp[key] = value;
+	}
+
+	return temp;
+
+};
