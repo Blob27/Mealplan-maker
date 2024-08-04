@@ -334,14 +334,14 @@ function saveChanges() {
                 
         }
         var Nutrients = [parseFloat(Carbs), parseFloat(Protein), parseFloat(Fat), parseFloat(Calories)];
-        if(Title == null || Title == "" || Title.replace(" ", "") == "") {
+        if(Title == null || Title == "" || Title.replace(/\s/g, "") == "") {
             window.alert("Can't save changes due to empty field.");
             listfoods();
             return;
         }
         for(let i = 0; i < Nutrients.length; i++) {
             var Nutrient = Nutrients[i];
-            if (Nutrient == null || isNaN(Nutrient) || Nutrient == "") {
+            if (Nutrient == null || isNaN(Nutrient)) {
                 window.alert("Can't save changes due to empty field.");
                 listfoods();
                 return;
@@ -481,6 +481,12 @@ function changeButton() {
     AddMealInput.name = "mealName";
     AddMealform.appendChild(AddMealInput)
     AddMealform.setAttribute("onsubmit", "HandleAddMeal(this);")
+    AddMealform.setAttribute("onfocusout", "listMealPlan();")
+    AddMealform.addEventListener('keydown', function(e) {
+        if (e.key == "Escape") {
+          listMealPlan();
+        }
+      });
     let mealplangrid = AddMealButton.parentNode;
     mealplangrid.appendChild(AddMealform);
     AddMealInput.focus();
@@ -560,6 +566,7 @@ function addFood(button) {
     var mealplanwhole = JSON.parse(localStorage.getItem("mealplan"));
     mealplanwhole[Object.keys(mealplanwhole)[0]][button.parentNode.parentNode.id][null] = null;
     localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
+    // location.reload();
     listMealPlan();
 }
 
@@ -584,16 +591,18 @@ function listaddfoodbutton() {
 }
 
 function listMealPlan() {
+    $('select').select2('close');
     let foodsdict = JSON.parse(localStorage.getItem("storedFoods"));
     let mealplanwhole = JSON.parse(localStorage.getItem("mealplan"));
     var maintable = document.getElementById("maintable");
+    var scrollcontainer = document.getElementById("scrollcontainer");
     var mealplantitle = document.getElementById("mealplantitleTE");
     if(mealplanwhole == null) {
         document.getElementById("savemealplan").disabled = true;
         document.getElementById("clearmealplan").disabled = true;
         maintable.replaceChildren();
         listaddfoodbutton();
-        mealplantitle.value = ""
+        mealplantitle.value = "";
         return;
     } else {
         document.getElementById("savemealplan").disabled = false;
@@ -605,7 +614,6 @@ function listMealPlan() {
     let bigtotalfat = 0;
     let bigtotalkcal = 0;
 
-    var mealplangrid = document.getElementById("mealplangrid");
     maintable.replaceChildren();
     let mealplan = Object.values(mealplanwhole)[0];
     for([mealname, mealdict] of Object.entries(mealplan)) {
@@ -689,6 +697,13 @@ function listMealPlan() {
             subkcal.style.fontStyle = "italic";
 
             valueinput.setAttribute("type", "number");
+            foodsdict = JSON.parse(localStorage.getItem("storedFoods"));
+            var thismeal = mealplan[mealname];
+            for(item of Object.keys(thismeal)) {
+                if(item == foodname) continue;
+                delete foodsdict[item]
+            }
+
             for(key of Object.keys(foodsdict)) {
                 var option = document.createElement("option");
                 option.value = key;
@@ -696,10 +711,10 @@ function listMealPlan() {
                 nameinput.appendChild(option);
             }
             nameinput.value = foodname;
-            if(foodvalue != null && foodvalue != "null") {
+            if(foodvalue != null && foodvalue != "null" && foodvalue != "") {
                 valueinput.value = foodvalue;
-            } else valueinput.placeholder = 0;
-            if(foodname != "null" && foodvalue != null) {
+            } else valueinput.placeholder = "0";
+            if(foodname != "null" && foodvalue != null && foodvalue != "null" && foodvalue != "") {
                 carbsvalue.innerHTML = Math.round(((foodsdict[foodname][0]*(foodvalue/100)) + Number.EPSILON) * 100) / 100 + "g";
                 proteinvalue.innerHTML = Math.round(((foodsdict[foodname][1]*(foodvalue/100)) + Number.EPSILON) * 100) / 100 + "g";
                 fatvalue.innerHTML = Math.round(((foodsdict[foodname][2]*(foodvalue/100)) + Number.EPSILON) * 100) / 100 + "g";
@@ -719,7 +734,6 @@ function listMealPlan() {
             newfoodbar.appendChild(fatvalue);
             newfoodbar.appendChild(subkcal);
             maintable.appendChild(newfoodbar);
-            delete foodsdict[foodname];
         }
         var addfoodbar = document.createElement("tr");
         var addfoodblock = document.createElement("td");
@@ -762,10 +776,12 @@ function listMealPlan() {
             proteintotal.style.fontStyle = "italic";
             fattotal.style.fontStyle = "italic";
             kcaltotal.style.fontWeight = "bold";
-            addfoodbar.appendChild(carbstotal);
-            addfoodbar.appendChild(proteintotal);
-            addfoodbar.appendChild(fattotal);
-            addfoodbar.appendChild(kcaltotal);
+            if(ctot != 0 || ptot != 0 || ftot != 0 || ktot != 0) {
+                addfoodbar.appendChild(carbstotal);
+                addfoodbar.appendChild(proteintotal);
+                addfoodbar.appendChild(fattotal);
+                addfoodbar.appendChild(kcaltotal);
+            }
         }
         maintable.appendChild(addfoodbar);
         bigtotalcarbs = bigtotalcarbs + ctot;
@@ -804,6 +820,9 @@ function updateFoodName(input) {
     if(foodname == null) {
         oldvalue = null;
     } else {oldvalue = mealplan[mealname][foodname];}
+    if(oldvalue == '') {
+        oldvalue = null;
+    }
     if(foodname == null) {
         delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname];
         mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][input.value] = oldvalue;
@@ -811,6 +830,20 @@ function updateFoodName(input) {
         listMealPlan();
         return;
     }
+    // if(oldvalue == null) {
+    //     var meal = mealplanwhole[Object.keys(mealplanwhole)[0]][mealname];
+    //     var index = Object.keys(meal).indexOf(foodname);
+    //     if(index >= Object.keys(meal).length-1) {
+    //             delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname];
+    //             mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][input.value] = oldvalue;
+    //             localStorage.setItem("mealplan", JSON.stringify(mealplanwhole));
+    //             listMealPlan();
+    //             return;
+    //     }
+    //     delete meal[foodname];
+    //     var objmeal = addToObject(meal, input.value, oldvalue, index);
+    //     mealplanwhole[Object.keys(mealplanwhole)[0]][mealname] = objmeal;
+    // }
     var meal = mealplanwhole[Object.keys(mealplanwhole)[0]][mealname];
     var index = Object.keys(meal).indexOf(foodname);
     if(index >= Object.keys(meal).length-1) {
@@ -820,8 +853,11 @@ function updateFoodName(input) {
             listMealPlan();
             return;
     }
+
     delete meal[foodname];
-    objmeal = addToObject(meal, input.value, oldvalue, index);
+    console.log(meal);
+    // if(oldvalue == null || oldvalue == "null" || oldvalue == "") oldvalue = 0;
+    var objmeal = addToObject(meal, input.value, oldvalue, index);
     console.log(objmeal);
     mealplanwhole[Object.keys(mealplanwhole)[0]][mealname] = objmeal;
     // delete mealplanwhole[Object.keys(mealplanwhole)[0]][mealname][foodname];
@@ -1071,7 +1107,6 @@ function RejectDeleteIndividualMP() {
 }
 
 function addToObject(obj, key, value, index) {
-
 	// Create a temp object and index variable
 	var temp = {};
 	var i = 0;
@@ -1081,7 +1116,7 @@ function addToObject(obj, key, value, index) {
 		if (obj.hasOwnProperty(prop)) {
 
 			// If the indexes match, add the new item
-			if (i === index && key && value) {
+			if (i === index && key) {
 				temp[key] = value;
 			}
 
@@ -1095,7 +1130,7 @@ function addToObject(obj, key, value, index) {
 	}
 
 	// If no index, add to the end
-	if (!index && key && value) {
+	if (!index && key) {
 		temp[key] = value;
 	}
 

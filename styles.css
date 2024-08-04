@@ -2,12 +2,14 @@ html {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 body {
     background-color: #F8F6F0;
     margin: 0;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
 #buttons {
@@ -743,12 +745,12 @@ td {
     border-radius: 25px;
     border-bottom: solid 1px black;
     border-right: solid 1px black;
-    border-left: solid 1px black
+    border-left: solid 1px black;
 }
 
 #scrollcontainer {
     overflow-y: auto;
-    flex: 1;
+    flex:1;
 }
 
 #configmealplan {
@@ -793,6 +795,7 @@ td {
     border: solid 2px black;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 #TotalText {
