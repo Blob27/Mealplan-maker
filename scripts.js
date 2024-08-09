@@ -62,7 +62,7 @@ function listfoods() {
             per100.innerHTML = "/100g";
             
             delib.innerHTML = "<i class='fas fa-trash'></i>";
-            delib.setAttribute("onclick", "confirmDeleteIndividual();");
+            delib.setAttribute("onclick", "confirmDeleteIndividual(this);");
             bottomContainer.appendChild(per100);
             bottomContainer.appendChild(delib);
             Carbs.appendChild(CarbsTitle);
@@ -412,33 +412,28 @@ function HandleAddImport(input) {
     }
 }
 
-function confirmDeleteIndividual() {
-    var els = document.getElementsByClassName("deleteIndividualButton");
-    for(let i = 0; i < els.length; i++) {
-        els[i].style.display = "none";
-    }
+function confirmDeleteIndividual(button) {
+    button.style.display = "none";
 
     
-    var bottomContainers = document.getElementsByClassName("bottomContainer");
-    for(let i = 0; i < bottomContainers.length; i++) {
-        var confirmDI = document.createElement("button");
-        var rejectDI = document.createElement("button");
-        confirmDI.className = "deleteIndividualButtonAccept confirmDIButton";
-        rejectDI.className = "deleteIndividualButtonReject confirmDIButton";
-        confirmDI.setAttribute("onclick", "AcceptDeleteIndividual(this);");
-        rejectDI.setAttribute("onclick", "RejectDeleteIndividual(this)")
-        var check = document.createElement("i");
-        var xmark = document.createElement("i");
-        check.classList.add("fas", "fa-check");
-        xmark.classList.add("fa-solid", "fa-xmark");
-        confirmDI.appendChild(check);
-        rejectDI.appendChild(xmark);
-        var contain = document.createElement("div");
-        contain.className = "containconfirmDI"
-        contain.appendChild(confirmDI);
-        contain.appendChild(rejectDI);
-        bottomContainers[i].appendChild(contain);   
-    }
+    var bottomContainer = button.parentNode;
+    var confirmDI = document.createElement("button");
+    var rejectDI = document.createElement("button");
+    confirmDI.className = "deleteIndividualButtonAccept confirmDIButton";
+    rejectDI.className = "deleteIndividualButtonReject confirmDIButton";
+    confirmDI.setAttribute("onclick", "AcceptDeleteIndividual(this);");
+    rejectDI.setAttribute("onclick", "RejectDeleteIndividual(this)")
+    var check = document.createElement("i");
+    var xmark = document.createElement("i");
+    check.classList.add("fas", "fa-check");
+    xmark.classList.add("fa-solid", "fa-xmark");
+    confirmDI.appendChild(check);
+    rejectDI.appendChild(xmark);
+    var contain = document.createElement("div");
+    contain.className = "containconfirmDI"
+    contain.appendChild(confirmDI);
+    contain.appendChild(rejectDI);
+    bottomContainer.appendChild(contain);
 
 }
 
