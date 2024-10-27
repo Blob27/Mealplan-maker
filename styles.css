@@ -294,7 +294,7 @@ input {
     width: 100%;
     display: grid;
     text-align: center;
-    place-items: center;
+/*     place-items: center; */
     font-size: x-large;
 }
 
@@ -304,6 +304,7 @@ input {
 }
 
 #newfoodCalories {
+    align-items: unset;
     font-size: x-large;
     border-width: 3px;
     text-align: center;
